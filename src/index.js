@@ -3,8 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
+const Data =[
+    {
+        Category: "Shopping", 
+        Items: [
+            {name: "Jordan-1s", cost: 230},
+            {name: "Lebron James Jersey", cost: 200}
+        ]
+    },
+    {}
+]
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App/>
+    <App Data={Data}/>
 );
 

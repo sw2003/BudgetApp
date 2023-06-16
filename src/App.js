@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Tab from './components/tab';
 import ExpenseCatagoryForm from './components/expenseCatagoryForm';
+import ExpenseCatItem from './components/expenseCatItem';
 
 const tabList = [
 	{ key: "tab-1", bg_color: "bg-orange-100", text: "Budget: " },
@@ -51,16 +52,11 @@ const App = () => {
 			<div className="relative w-full">
 				<ExpenseCatagoryForm></ExpenseCatagoryForm>
 			</div>
+			<ExpenseCatItem></ExpenseCatItem>
+			
 		</div>
 	);
 };
 
 export default App;
 
-/*
-
-			<div className="">
-				<h1 className="mx-auto block w-1/2 text-center my-2 subpixel-antialiased text-xl">Budget Tracker</h1>
-				<div className="w-full"></div>
-			</div>
-			*/
