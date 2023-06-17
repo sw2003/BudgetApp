@@ -1,11 +1,39 @@
 import React, { useState } from 'react';
+import { nanoid } from 'nanoid';
+import ExpenseEditForm from './editItemForm';
+
 
 export default function ExpenseCatItem(props) {
+
+
+    function getBarData(){
+        const limit = props.Limit; 
+
+        let counter = 0; 
+        for (let i = 0; i<props.Items.length; i++){
+            let cost = parseFloat(props.Items[i].cost);
+            counter += cost; 
+        }
+    
+        const percent = Math.floor((counter/limit) * 100);
+
+        return [percent, counter]; 
+    }
+
+    const percent = getBarData()[0]; 
+    const count = getBarData()[1];
+
+
+
+    const [barStyle, setBarStyle] = useState({width: `${percent >= 100 ? '100': percent}%`}) 
+
     const [submitValid, setSubmitValid] = useState(true); 
     const [addPriceValid, setAddPriceValid] = useState(true); 
     const [addPrice, setAddPrice] = useState(""); 
 
     const [AddItemText, setAddItemText] = useState("");
+
+    const [counter, setCounter] = useState(count); 
 
     function onChange(e, state, setterValid, setterValue){
         if (setterValid){
@@ -27,25 +55,29 @@ export default function ExpenseCatItem(props) {
         e.preventDefault(); 
 
         if (AddItemText !== '' && addPriceValid){
+            setSubmitValid(true); 
             props.addExpense(props.Category, AddItemText, addPrice); 
+            setAddItemText('');
+            setAddPrice('');
+
+            setCounter(getBarData()[1]);
+
+
+            setBarStyle({width: `${percent>=100 ? '100': getBarData()[0]}%`});
+        }
+        else{
+            setSubmitValid(false); 
         }
     }
 
     const items = props.Items.map((obj) => {
         return (
-            <div key={obj.name} className='flex justify-around pt-2'>
-                <p className='inline-block w-1/4'>{obj.name} {obj.cost}$</p>
-                <div className='w-1/2'>
-                    <button className='bg-green-300 w-1/3 border-slate-700 border-2'>Edit</button>
-                    <button className='ml-8 bg-rose-500 w-1/3 border-slate-700 border-2'>Delete</button>
-                </div>
-            </div>
+            <ExpenseEditForm key={`${nanoid()}`} name={obj.name} cost={obj.cost} category={props.Category} updateEdits={props.updateEdits} deleteItem={props.deleteItem}></ExpenseEditForm>
         )
     })
 
     return (
         <div className="w-3/4 bg-orange-300 mt-2 relative">
-            <button className='absolute right-0 top-0 mr-4 mt-2 pl-2 pr-2 bg-green-300 border-2 border-slate-700'>Edit Category</button>
             <h1 className="bg-orange-200 w-1/4 mx-auto text-center py-1.5">{props.Category}</h1>
             <div className="w-full bg-orange-200 mt-2">
                 <ul>
@@ -67,10 +99,10 @@ export default function ExpenseCatItem(props) {
                     </div>
                     <button className='border-2 bg-green-300 border-slate-700 pl-2 pr-2 pt-.5 pb-.5'>Submit</button>
                 </form>
-                <div className='w-full w-full h-12 flex items-center justify-center mt-2'>
+                <div className='w-full w-full h-12 flex items-center justify-center mt-2 max-h-12'>
                     <div className='w-11/12	h-11/12 bg-white relative'>
-                        <p className='w-1/4 mx-auto text-center'>500$/1300$</p>
-                        <div className='w-1/2 h-full bg-black absolute top-0 left-0 opacity-10 bg-rose-500'>hi</div>
+                        <p className='w-1/4 mx-auto text-center'>{`${counter}/${props.Limit}$`}</p>
+                        <div className='h-full bg-black absolute top-0 left-0 opacity-10 bg-rose-500' style={barStyle}></div>
                     </div>
                 </div>
             </div>

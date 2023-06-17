@@ -9,15 +9,16 @@ const Data =[
         Items: [
             {name: "Jordan-1s", cost: 230},
             {name: "Lebron Jersey", cost: 200}
-        ]
+        ],
+        Limit: 1000
     },
     {
         Category: "Electronics",
         Items: [
             {name: "Samsung TV", cost: 500},
             {name: "Fridge", cost: 1000} 
-        ]
-
+        ],
+        Limit: 1000
     }
 ]
 

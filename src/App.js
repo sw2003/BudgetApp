@@ -3,6 +3,7 @@ import Tab from './components/tab';
 import ExpenseCatagoryForm from './components/expenseCatagoryForm';
 import ExpenseCatItem from './components/expenseCatItem';
 
+
 const tabList = [
 	{ key: "tab-1", bg_color: "bg-orange-100", text: "Budget: " },
 	{ key: "tab-2", bg_color: "bg-orange-200", text: "Remaining: " },
@@ -39,15 +40,62 @@ const App = ({Data}) => {
 	function addExpense(category, name, price){
 		for (let i = 0; i<data.length; i++){
 			if (data[i].Category === category){
+
 				let dataCopy = [...data]; 
 
 				let itemsList = data[i].Items;
 				itemsList.push({name: name, cost: price})
 
+				let num = parseFloat(price); 
+				setTotalSpent(totalSpent + num);
+				setRemaining(remaining - num);
+
 				dataCopy[i].Items = itemsList
 
 				setData(dataCopy); 
 			}
+		}
+	}
+
+	function updateEdits(category, name, amount, oldname){
+		for (let i = 0; i<data.length; i++){
+			if (data[i].Category === category){
+				for (let j = 0; j<data[i].Items.length; j++){
+					if (data[i].Items[j].name === oldname){
+						let arrayCopy = [...data]; 
+						let itemsList = data[i].Items;
+						
+						let objectCopy = {...data[i].Items[j], name: name, cost: amount}
+						arrayCopy[i].Items[j] = objectCopy
+
+						setData(arrayCopy);
+					}
+				}
+			}
+		}
+	}
+
+	function deleteItem(category, name){
+		for (let i = 0; i<data.length; i++){
+			if (data[i].Category === category){
+				let arrayCopy = [...data]; 
+
+				let updatedItemsArray = data[i].Items.filter((obj)=>{
+					if (obj.name === name){
+						
+						setRemaining(remaining + parseFloat(obj.cost));
+						setTotalSpent(totalSpent - parseFloat(obj.cost));
+
+						return false;
+					}
+					return true; 
+				})
+
+				arrayCopy[i].Items = updatedItemsArray;
+
+				setData(arrayCopy);
+			}
+			
 		}
 	}
 
@@ -72,9 +120,12 @@ const App = ({Data}) => {
 			key={obj.Category} 
 			Category={obj.Category} 
 			Items={obj.Items} 
+			Limit={obj.Limit}
 			totalSpent={totalSpent} 
 			setTotalSpent={setTotalSpent}
 			addExpense={addExpense} 
+			updateEdits={updateEdits}
+			deleteItem={deleteItem}
 		/>
 	})
 	
