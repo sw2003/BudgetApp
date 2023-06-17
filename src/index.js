@@ -8,10 +8,17 @@ const Data =[
         Category: "Shopping", 
         Items: [
             {name: "Jordan-1s", cost: 230},
-            {name: "Lebron James Jersey", cost: 200}
+            {name: "Lebron Jersey", cost: 200}
         ]
     },
-    {}
+    {
+        Category: "Electronics",
+        Items: [
+            {name: "Samsung TV", cost: 500},
+            {name: "Fridge", cost: 1000} 
+        ]
+
+    }
 ]
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

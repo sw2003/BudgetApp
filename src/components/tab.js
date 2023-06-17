@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 export default function Tab(props) {
-    const [budget, setBudget] = useState("2000"); 
+    const budget = props.budget; 
+    const remaining = props.remaining;
+    const totalSpent = props.totalSpent;
+
     const [editingBudget, setEditingBudget] = useState(""); 
     const [isEditingBudget, setIsEdit] = useState(false);
     
@@ -17,7 +20,9 @@ export default function Tab(props) {
         e.preventDefault(); 
 
         if (checkBudget()){
-            setBudget(editingBudget);
+            props.setBudget(editingBudget);
+            props.setRemaining(parseFloat(editingBudget) - totalSpent);
+
             setIsEdit(false); 
             setEditingBudget("");
         }
@@ -69,8 +74,19 @@ export default function Tab(props) {
         )
         return isEditingBudget ? editTemplate : displayTemplate; 
     }
-    return (
-        <div className={props.bg_color + " w-1/3 text-center flex items-center justify-center"}>{props.text} 2000</div>
-    )
+    else if (props.text === "Remaining: "){
+        return (
+            <div className={props.bg_color + " w-1/3 text-center flex items-center justify-center"}>{props.text} {props.remaining}</div>
+        )
+    }
+    else{
+        return (
+            <div className={props.bg_color + " w-1/3 text-center flex items-center justify-center"}>{props.text} {props.totalSpent}</div>
+        )
+    }
+
+
+
+   
 }
 

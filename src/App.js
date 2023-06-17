@@ -9,22 +9,45 @@ const tabList = [
 	{ key: "tab-3", bg_color: "bg-orange-300", text: "Total spent: " }
 ]
 
-const App = () => {
+const App = ({Data}) => {
+	let counter = 0; 
+	for (let i = 0; i<Data.length; i++){
+		for (let j=0; j<Data[i].Items.length; j++){
+			counter+= Data[i].Items[j].cost;
+		}
+	}
+	const [data, setData] = useState(Data); 
+
+	const [budget, setBudget] = useState(2000);
+	const [remaining, setRemaining] = useState(2000-counter);
+	const [totalSpent, setTotalSpent] = useState(counter); 
+
 	const [hasEditError, setEditError] = useState(false);
 	const [editErrorMessage, setEditErrorMessage] = useState(""); 
 
-
 	function handleError(isError, message) {
 		if (isError){
-			// error
 			setEditError(true); 
 			setEditErrorMessage(message); 
 		}
 		else{
-
 			setEditError(false); 
 			setEditErrorMessage(message); 
-			// no error 
+		}
+	}
+
+	function addExpense(category, name, price){
+		for (let i = 0; i<data.length; i++){
+			if (data[i].Category === category){
+				let dataCopy = [...data]; 
+
+				let itemsList = data[i].Items;
+				itemsList.push({name: name, cost: price})
+
+				dataCopy[i].Items = itemsList
+
+				setData(dataCopy); 
+			}
 		}
 	}
 
@@ -35,9 +58,26 @@ const App = () => {
 			text={tab_obj.text}
 			handleError={handleError} 
 			setEditError={setEditError} 
+			budget={budget}
+			remaining={remaining} 
+			totalSpent={totalSpent}
+			setBudget={setBudget} 
+			setRemaining={setRemaining} 
+			setTotalSpent={setTotalSpent} 
 		/>
 	})
-
+	
+	const categorys = data.map((obj)=>{
+		return <ExpenseCatItem
+			key={obj.Category} 
+			Category={obj.Category} 
+			Items={obj.Items} 
+			totalSpent={totalSpent} 
+			setTotalSpent={setTotalSpent}
+			addExpense={addExpense} 
+		/>
+	})
+	
 	return (
 		<div className="max-w-4xl mx-auto">
 			<h1 className="mx-auto block w-1/2 text-center my-2 subpixel-antialiased text-xl">Budget Tracker</h1>
@@ -52,8 +92,7 @@ const App = () => {
 			<div className="relative w-full">
 				<ExpenseCatagoryForm></ExpenseCatagoryForm>
 			</div>
-			<ExpenseCatItem></ExpenseCatItem>
-			
+			{categorys} 		
 		</div>
 	);
 };
