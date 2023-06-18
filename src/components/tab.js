@@ -76,7 +76,11 @@ export default function Tab(props) {
     }
     else if (props.text === "Remaining: "){
         return (
-            <div className={props.bg_color + " w-1/3 text-center flex items-center justify-center"}>{props.text} {props.remaining}</div>
+
+
+            <div className={`${props.bg_color} w-1/3 text-center flex items-center justify-center ${parseFloat(props.remaining) <= 0 && 'text-rose-600'}`}>{props.text} {props.remaining}</div>
+
+
         )
     }
     else{

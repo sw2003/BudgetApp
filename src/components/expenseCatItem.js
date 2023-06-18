@@ -62,8 +62,7 @@ export default function ExpenseCatItem(props) {
 
             setCounter(getBarData()[1]);
 
-
-            setBarStyle({width: `${percent>=100 ? '100': getBarData()[0]}%`});
+            setBarStyle({width: `${getBarData()[0]>=100 ? '100': getBarData()[0]}%`});
         }
         else{
             setSubmitValid(false); 
@@ -79,6 +78,7 @@ export default function ExpenseCatItem(props) {
     return (
         <div className="w-3/4 bg-orange-300 mt-2 relative">
             <h1 className="bg-orange-200 w-1/4 mx-auto text-center py-1.5">{props.Category}</h1>
+            <button onClick={()=>props.deleteCategory(props.Category)} className='absolute top-0 right-0 mt-1 mr-1'>❌</button>
             <div className="w-full bg-orange-200 mt-2">
                 <ul>
                     <li>
@@ -102,7 +102,7 @@ export default function ExpenseCatItem(props) {
                 <div className='w-full w-full h-12 flex items-center justify-center mt-2 max-h-12'>
                     <div className='w-11/12	h-11/12 bg-white relative'>
                         <p className='w-1/4 mx-auto text-center'>{`${counter}/${props.Limit}$`}</p>
-                        <div className='h-full bg-black absolute top-0 left-0 opacity-10 bg-rose-500' style={barStyle}></div>
+                        <div className='h-full bg-black absolute top-0 left-0 opacity-10 bg-rose-500 transition-all duration-500' style={barStyle}></div>
                     </div>
                 </div>
             </div>

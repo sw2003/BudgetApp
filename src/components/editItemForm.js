@@ -29,6 +29,9 @@ export default function ExpenseEditForm(props) {
         e.preventDefault();
 
         props.updateEdits(props.category, itemName, amount, props.name); 
+
+        setItemName(''); 
+        setAmount('');
     }
 
     return (

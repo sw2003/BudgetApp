@@ -99,6 +99,39 @@ const App = ({Data}) => {
 		}
 	}
 
+	function addExpenseCategory(category, limit){
+		for (let i = 0; i<data.length; i++){
+			if (data[i].Category === category){
+				return false;
+			}
+		}
+
+		let arrayCopy = [...data, {Category: category, Items: [], Limit: limit}]; 
+
+		setData(arrayCopy);
+
+		return true; 
+	}
+
+	function deleteCategory(category){
+		let counter = 0; 
+
+		const updatedArray = data.filter((obj)=>{
+			if (obj.Category === category){
+				for (let i = 0; i<obj.Items.length; i++){
+					counter+= parseFloat(obj.Items[i].cost); 
+				}
+
+				return false;
+			}
+			return true; 
+		})
+
+		setRemaining(remaining + counter); 
+		setTotalSpent(totalSpent - counter); 
+		setData(updatedArray);
+	}
+
 	const tabs = tabList.map((tab_obj) => {
 		return <Tab
 			key={tab_obj.key}
@@ -126,6 +159,7 @@ const App = ({Data}) => {
 			addExpense={addExpense} 
 			updateEdits={updateEdits}
 			deleteItem={deleteItem}
+			deleteCategory={deleteCategory} 
 		/>
 	})
 	
@@ -141,7 +175,9 @@ const App = ({Data}) => {
 				)
 			}
 			<div className="relative w-full">
-				<ExpenseCatagoryForm></ExpenseCatagoryForm>
+				<ExpenseCatagoryForm 
+					addExpenseCategory={addExpenseCategory}
+				/>
 			</div>
 			{categorys} 		
 		</div>
