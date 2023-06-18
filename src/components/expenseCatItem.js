@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { nanoid } from 'nanoid';
 import ExpenseEditForm from './editItemForm';
 
@@ -20,8 +20,8 @@ export default function ExpenseCatItem(props) {
         return [percent, counter]; 
     }
 
-    const percent = getBarData()[0]; 
-    const count = getBarData()[1];
+    let percent = getBarData()[0]; 
+    let count = getBarData()[1];
 
 
 
@@ -50,6 +50,12 @@ export default function ExpenseCatItem(props) {
         }
         setterValue(e.target.value); 
     }
+
+    useEffect(()=>{
+        setBarStyle({width: `${getBarData()[0]>=100 ? '100': getBarData()[0]}%`});
+        setCounter(getBarData()[1]);
+
+    }, [props.data])
 
     function onSubmit(e){
         e.preventDefault(); 
@@ -101,7 +107,7 @@ export default function ExpenseCatItem(props) {
                 </form>
                 <div className='w-full w-full h-12 flex items-center justify-center mt-2 max-h-12'>
                     <div className='w-11/12	h-11/12 bg-white relative'>
-                        <p className='w-1/4 mx-auto text-center'>{`${counter}/${props.Limit}$`}</p>
+                        <p className={`w-1/4 mx-auto text-center ${parseFloat(counter) <= 0 && 'text-rose-500'}`}>{`${counter}/${props.Limit}$`}</p>
                         <div className='h-full bg-black absolute top-0 left-0 opacity-10 bg-rose-500 transition-all duration-500' style={barStyle}></div>
                     </div>
                 </div>

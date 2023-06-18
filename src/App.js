@@ -132,6 +132,10 @@ const App = ({Data}) => {
 		setData(updatedArray);
 	}
 
+	function updateDeleteAnimation(){
+
+	}
+
 	const tabs = tabList.map((tab_obj) => {
 		return <Tab
 			key={tab_obj.key}
@@ -152,6 +156,7 @@ const App = ({Data}) => {
 		return <ExpenseCatItem
 			key={obj.Category} 
 			Category={obj.Category} 
+			data={data} 
 			Items={obj.Items} 
 			Limit={obj.Limit}
 			totalSpent={totalSpent} 
